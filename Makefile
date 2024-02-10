@@ -1,0 +1,71 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/01/06 16:12:27 by psegura-          #+#    #+#              #
+#    Updated: 2024/02/10 20:19:46 by psegura-         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+MAKEFLAGS += --no-print-directory
+
+### Colors ###
+
+#RESET	=	\033c
+GREEN	=	\033[1;32m
+RED		=	\033[0;31m
+CYAN	=	\033[0;36m
+WHITE	=	\033[0m
+
+NAME = fdf
+
+FDF_SRCS =					\
+			main.c			\
+		
+SRCS = $(addprefix srcs/, $(FDF_SRCS))
+
+
+OBJS = $(SRCS:%.c=objs/%.o)
+
+LIB = libft/libft.a
+
+CC = gcc
+
+CFLAGS	 = -Wall -Wextra -Werror #-g3 -fsanitize=address,leak
+CFLAGS	+= -I inc
+CFLAGS	+= -I libft
+
+all: $(NAME)
+
+$(NAME): objs $(OBJS)
+	@make -C libft
+	@$(CC) $(CFLAGS) $(OBJS) $(LIB) -o $(NAME)
+	@echo "$(CYAN)FdF READY$(WHITE)"
+
+objs:
+	mkdir -p objs/srcs/
+
+objs/%.o: %.c
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+clean:
+	@make clean -C libft
+	@rm -rf objs
+
+fclean: clean
+	@make fclean -C libft
+	@rm -f $(NAME)
+
+re:: fclean
+re:: all
+
+debug:: CFLAGS += -g3 -fsanitize=address#,leak
+debug:: re
+
+norma:
+	@echo 6e6f726d696e65747465207372637320696e6320313e2f6465762f6e756c6c3b206966205b5b20243f202d65712030205d5d3b207468656e206e6f726d696e65747465207372637320696e633b20656c7365206e6f726d696e65747465207372637320696e63207c206772657020274572726f7227203b206669 | xxd -r -p | zsh
+
+.PHONY: all clean fclean re norma debug
