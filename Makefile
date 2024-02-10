@@ -6,7 +6,7 @@
 #    By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/06 16:12:27 by psegura-          #+#    #+#              #
-#    Updated: 2024/02/10 20:19:46 by psegura-         ###   ########.fr        #
+#    Updated: 2024/02/10 20:27:59 by psegura-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,19 +34,34 @@ LIB = libft/libft.a
 
 CC = gcc
 
+OS = $(shell uname -s)
+
 CFLAGS	 = -Wall -Wextra -Werror #-g3 -fsanitize=address,leak
 CFLAGS	+= -I inc
 CFLAGS	+= -I libft
+CFLAGS += -O3
+
+ifeq ($(OS),Darwin)
+	CFLAGS += -D OSX
+	FLAGS_MLX =  -lmlx -framework OpenGL -framework AppKit 
+endif
+ifeq ($(OS),Linux)
+	CFLAGS += -D LINUX
+	CFLAGS += -fsanitize=leak -g3
+	FLAGS_MLX =  -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz 
+	FLAGS_MLX +=  -fsanitize=leak
+	CFLAGS += -I/usr/include -Imlx_linux
+endif
 
 all: $(NAME)
 
 $(NAME): objs $(OBJS)
 	@make -C libft
-	@$(CC) $(CFLAGS) $(OBJS) $(LIB) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJS) $(LIB) $(FLAGS_MLX) -o $(NAME)
 	@echo "$(CYAN)FdF READY$(WHITE)"
 
 objs:
-	mkdir -p objs/srcs/
+	@mkdir -p objs/srcs/
 
 objs/%.o: %.c
 	@$(CC) $(CFLAGS) -c $< -o $@

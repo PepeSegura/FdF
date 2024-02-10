@@ -1,18 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   libs.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/10 20:19:58 by psegura-          #+#    #+#             */
-/*   Updated: 2024/02/10 20:31:43 by psegura-         ###   ########.fr       */
+/*   Created: 2024/02/10 23:18:22 by psegura-          #+#    #+#             */
+/*   Updated: 2024/02/10 20:30:14 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#ifndef LIBS_H
+# define LIBS_H
 
-int	main(void)
-{
-	return (0);
-}
+/*______UNISTD_______
+Write, Read, Close
+*/
+# include <unistd.h>
+
+/*______FCNTL________
+Open
+*/
+# include <fcntl.h>
+
+/*______STDIO________
+Printf, Strerror, Perror
+*/
+# include <stdio.h>
+
+/*______STDLIB_______
+Malloc, Free, Exit
+*/
+# include <stdlib.h>
+
+# include <math.h>
+# include <mlx.h>
+# include <limits.h>
+
+#endif
