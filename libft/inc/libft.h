@@ -6,7 +6,7 @@
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 16:44:42 by psegura-          #+#    #+#             */
-/*   Updated: 2023/12/24 22:13:12 by psegura-         ###   ########.fr       */
+/*   Updated: 2024/02/10 20:39:36 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ t_list		*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 
 //GET_NEXT_LINE
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 10
+#  define BUFFER_SIZE 100
 # endif
 
 # ifndef OPEN_MAX
