@@ -6,7 +6,7 @@
 #    By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/06 16:12:27 by psegura-          #+#    #+#              #
-#    Updated: 2024/02/10 20:27:59 by psegura-         ###   ########.fr        #
+#    Updated: 2024/02/11 15:05:11 by psegura-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,11 +22,11 @@ WHITE	=	\033[0m
 
 NAME = fdf
 
-FDF_SRCS =					\
-			main.c			\
+FDF_SRCS =						\
+			main.c				\
+			matrix_operations.c	\
 		
 SRCS = $(addprefix srcs/, $(FDF_SRCS))
-
 
 OBJS = $(SRCS:%.c=objs/%.o)
 
@@ -39,7 +39,7 @@ OS = $(shell uname -s)
 CFLAGS	 = -Wall -Wextra -Werror #-g3 -fsanitize=address,leak
 CFLAGS	+= -I inc
 CFLAGS	+= -I libft
-CFLAGS += -O3
+CFLAGS	+= -O3
 
 ifeq ($(OS),Darwin)
 	CFLAGS += -D OSX
