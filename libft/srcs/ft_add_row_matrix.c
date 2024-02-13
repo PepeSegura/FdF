@@ -6,7 +6,7 @@
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 01:49:01 by psegura-          #+#    #+#             */
-/*   Updated: 2023/06/11 19:03:20 by psegura-         ###   ########.fr       */
+/*   Updated: 2024/02/13 14:45:32 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,24 @@
 char	**ft_add_row_matrix(char **matrix, char *new_row)
 {
 	int		i;
-	char	**aux;
+	char	**new_matrix;
+	int		len_matrix;
 
 	if (!matrix)
 		return (NULL);
-	aux = ft_calloc(sizeof(char *), (ft_len_matrix(matrix) + 2));
-	if (!aux)
+	len_matrix = ft_len_matrix(matrix);
+	new_matrix = ft_calloc(sizeof(char *), (len_matrix + 2));
+	if (!new_matrix)
 		return (NULL);
 	if (!new_row)
 		return (matrix);
 	i = 0;
-	while (i < ft_len_matrix(matrix))
+	while (i < len_matrix)
 	{
-		aux[i] = matrix[i];
+		new_matrix[i] = matrix[i];
 		i++;
 	}
-	aux[i] = new_row;
+	new_matrix[i] = new_row;
 	free(matrix);
-	return (aux);
+	return (new_matrix);
 }
