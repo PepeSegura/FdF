@@ -6,7 +6,7 @@
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 20:20:32 by psegura-          #+#    #+#             */
-/*   Updated: 2024/02/13 18:59:18 by psegura-         ###   ########.fr       */
+/*   Updated: 2024/02/14 20:40:39 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,13 @@ typedef struct s_point
 	char	*color;
 }	t_point;
 
+typedef struct s_map
+{
+	t_point	**map;
+	int		height;
+	int		wide;
+}	t_map;
+
 typedef struct s_mlx
 {
 	void	*mlx;
@@ -42,6 +49,6 @@ int		**matrix_adition(int size_x, int size_y,
 int		**matrix_multiplication(int size_x, int size_y,
 			const int a[size_x][size_y], const int b[size_x][size_y]);
 
-t_point	**create_map_matrix(char *filename);
+t_point	**create_map_matrix(t_map *info, char *filename);
 
 #endif

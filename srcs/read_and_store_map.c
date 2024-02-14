@@ -6,7 +6,7 @@
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 18:53:09 by psegura-          #+#    #+#             */
-/*   Updated: 2024/02/13 18:53:27 by psegura-         ###   ########.fr       */
+/*   Updated: 2024/02/14 21:12:07 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,12 @@ t_point	store_point_info(int x, int y, char *str)
 	aux = ft_strchr(str, ',');
 	point.color = NULL;
 	if (aux)
-		point.color = (aux + 1);
+		point.color = ft_strdup(aux + 1);
 	return (point);
 }
-// point.color = ft_strdup(aux + 1);
 // printf("x: [%d] y: [%d] h: [%d] c: [%s]\n", point.x, point.y, point.height, point.color);
 
-t_point	**store_map_info(char **map, int i, int j)
+t_point	**store_map_info(t_map *info, char **map, int i, int j)
 {
 	t_point	**map_info;
 	int		len;
@@ -62,10 +61,12 @@ t_point	**store_map_info(char **map, int i, int j)
 		ft_free_matrix(line_points);
 		i++;
 	}
+	info->height = len;
+	info->wide = wide;
 	return (map_info);
 }
 
-t_point	**create_map_matrix(char *filename)
+t_point	**create_map_matrix(t_map *info, char *filename)
 {
 	t_point	**final_map;
 	char	**map;
@@ -86,8 +87,9 @@ t_point	**create_map_matrix(char *filename)
 			break ;
 		map = ft_add_row_matrix(map, line);
 	}
-	final_map = store_map_info(map, 0, 0);
+	final_map = store_map_info(info, map, 0, 0);
 	close(fd);
 	ft_free_matrix(map);
+	info->map = final_map;
 	return (final_map);
 }
