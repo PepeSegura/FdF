@@ -6,7 +6,7 @@
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 23:11:20 by psegura-          #+#    #+#             */
-/*   Updated: 2024/02/10 20:30:21 by psegura-         ###   ########.fr       */
+/*   Updated: 2024/02/15 18:02:46 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,13 @@
 
 // # define MAP_WIDTH		24
 // # define MAP_HEIGHT		24
+#ifndef SCREEN_WIDTH
 # define SCREEN_WIDTH	1280
+#endif
+
+#ifndef SCREEN_HEIGHT
 # define SCREEN_HEIGHT	720
+#endif
 
 # define MINIMAP_SIZE	200
 # define CELL_SIZE	5

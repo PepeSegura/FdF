@@ -6,7 +6,7 @@
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 20:19:58 by psegura-          #+#    #+#             */
-/*   Updated: 2024/02/14 21:12:16 by psegura-         ###   ########.fr       */
+/*   Updated: 2024/02/15 18:00:41 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	draw_points(t_map *map, t_mlx *mlx)
 	t_data	img;
 	t_point **points = map->map;
 
-	img.img = mlx_new_image(mlx->mlx, 1920, 1080);
+	img.img = mlx_new_image(mlx->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
 	for (int i = 0; i < map->height; i++)
 	{
@@ -100,7 +100,7 @@ int	main(int argc, char **argv)
 	init_data(&map, argv[1]);
 
 	mlx.mlx = mlx_init();
-	mlx.win = mlx_new_window(mlx.mlx, 1920, 1080, "FDF");
+	mlx.win = mlx_new_window(mlx.mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "FDF");
 
 	draw_points(&map, &mlx);
 	mlx_hook(mlx.win, 2, 1L << 0, ft_input, &mlx);
