@@ -6,7 +6,7 @@
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 23:11:20 by psegura-          #+#    #+#             */
-/*   Updated: 2024/02/15 18:02:46 by psegura-         ###   ########.fr       */
+/*   Updated: 2024/02/16 21:23:29 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,36 +18,8 @@
 # define FALSE 			0
 
 /*__Game_Settings__*/
-# define MS				0.6
-# define ROT_MS			0.1
-
-// # define MAP_WIDTH		24
-// # define MAP_HEIGHT		24
-#ifndef SCREEN_WIDTH
 # define SCREEN_WIDTH	1280
-#endif
-
-#ifndef SCREEN_HEIGHT
 # define SCREEN_HEIGHT	720
-#endif
-
-# define MINIMAP_SIZE	200
-# define CELL_SIZE	5
-
-/*__Map_Chars__*/
-# define VALID_CHARS		" 01NSEW"
-# define EMPTY_CHAR			'0'
-# define WALL_CHAR			'1'
-# define NORTH_CHAR			'N'
-# define SOUTH_CHAR			'S'
-# define EAST_CHAR			'E'
-# define WEST_CHAR			'W'
-
-enum e_sides
-{
-	EW,
-	NS
-};
 
 /*__Keys_&_Events__*/
 # ifdef OSX

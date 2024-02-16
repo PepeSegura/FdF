@@ -6,7 +6,7 @@
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 20:19:58 by psegura-          #+#    #+#             */
-/*   Updated: 2024/02/15 18:00:41 by psegura-         ###   ########.fr       */
+/*   Updated: 2024/02/16 21:37:33 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,22 +65,57 @@ int	get_color(char *color)
 	return (final_color);
 }
 
-void	draw_points(t_map *map, t_mlx *mlx)
+void	draw_cross(t_data *img)
 {
-	t_data	img;
-	t_point **points = map->map;
+	const int	height_center = SCREEN_WIDTH / 2;
+	const int	wide_center = SCREEN_HEIGHT / 2;
 
-	img.img = mlx_new_image(mlx->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
-	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
-	for (int i = 0; i < map->height; i++)
+	printf("center (%d,%d)\n", height_center, wide_center);
+	for (int i = 0; i < SCREEN_WIDTH; i++)
 	{
-		for (int j = 0; j < map->wide; j++)
-		{
-			my_mlx_pixel_put(&img, (points[i][j].y * 20) , (points[i][j].x * 20), get_color(points[i][j].color));
-		}
+		my_mlx_pixel_put(img, i , wide_center, 0x0Fa3a3a3);
 	}
-	mlx_put_image_to_window(mlx->mlx, mlx->win, img.img, 0, 0);
+	for (int i = 0; i < SCREEN_HEIGHT; i++)
+	{
+		my_mlx_pixel_put(img, height_center , i, 0x0Fa3a3a3);
+	}
 }
+
+void draw_points(t_map *map, t_mlx *mlx) {
+    t_data img;
+    t_point **points = map->map;
+
+    img.img = mlx_new_image(mlx->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
+    img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
+
+    // Calculate the center of the map
+    int map_center_x = map->height / 2;
+    int map_center_y = map->wide / 2;
+
+    // Calculate the center of the window
+    int window_center_x = SCREEN_WIDTH / 2;
+    int window_center_y = SCREEN_HEIGHT / 2;
+
+    draw_cross(&img);
+
+    for (int i = 0; i < map->height; i++) {
+        for (int j = 0; j < map->wide; j++) {
+            // Calculate the offset from the center of the map to the center of the window
+            int x_offset = (j - map_center_y) * 20;
+            int y_offset = (i - map_center_x) * 20;
+
+            // Calculate the coordinates to draw the point
+            int x_draw = window_center_x + x_offset;
+            int y_draw = window_center_y + y_offset;
+
+            // Draw the point
+            my_mlx_pixel_put(&img, x_draw, y_draw, get_color(points[i][j].color));
+        }
+    }
+
+    mlx_put_image_to_window(mlx->mlx, mlx->win, img.img, 0, 0);
+}
+
 
 void	init_data(t_map *map, char *input_file)
 {
@@ -109,6 +144,6 @@ int	main(int argc, char **argv)
 	mlx_loop(mlx.mlx);
 	
 	exit_program(map.map);
-	system("leaks -q fdf");
+	// system("leaks -q fdf");
 	return (0);
 }
