@@ -6,7 +6,7 @@
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 23:18:22 by psegura-          #+#    #+#             */
-/*   Updated: 2024/02/10 20:30:14 by psegura-         ###   ########.fr       */
+/*   Updated: 2024/02/16 22:13:09 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ Malloc, Free, Exit
 */
 # include <stdlib.h>
 
+# define _USE_MATH_DEFINES
 # include <math.h>
 # include <mlx.h>
 # include <limits.h>
