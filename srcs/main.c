@@ -6,7 +6,7 @@
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 20:19:58 by psegura-          #+#    #+#             */
-/*   Updated: 2024/02/24 18:01:52 by psegura-         ###   ########.fr       */
+/*   Updated: 2024/02/24 18:05:42 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,8 @@ void	bresenham_line(t_data *img, int x0, int y0, int x1, int y1, int color)
 	while (x != x1 || y != y1)
 	{
 		printf("(%d, %d)\n", x, y);
-		my_mlx_pixel_put(img, x, y, color);
+		if (x >= 0 && y >= 0)
+			my_mlx_pixel_put(img, x, y, color);
 		e2 = 2 * err;
 		if (e2 > -dy)
 		{
