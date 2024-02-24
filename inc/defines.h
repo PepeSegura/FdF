@@ -6,7 +6,7 @@
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 23:11:20 by psegura-          #+#    #+#             */
-/*   Updated: 2024/02/16 22:39:49 by psegura-         ###   ########.fr       */
+/*   Updated: 2024/02/24 17:58:47 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 #  define S		1
 #  define D		2
 
-#  define UP			126
+#  define UP		126
 #  define LEFT		123
 #  define DOWN		125
 #  define RIGHT		124
@@ -40,7 +40,7 @@
 #  ifndef LINUX
 #   define LINUX
 #  endif
-#  define ESC		65307
+#  define ESC	65307
 #  define W		119
 #  define A		97
 #  define S		115

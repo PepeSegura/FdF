@@ -6,7 +6,7 @@
 #    By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/06 16:12:27 by psegura-          #+#    #+#              #
-#    Updated: 2024/02/16 20:40:12 by psegura-         ###   ########.fr        #
+#    Updated: 2024/02/17 12:49:05 by psegura-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,7 +58,6 @@ all: $(NAME)
 
 $(NAME): objs $(OBJS)
 	@make -C libft
-	@make -C mlx_linux
 	@$(CC) $(CFLAGS) $(OBJS) $(LIB) $(FLAGS_MLX) -o $(NAME)
 	@echo "$(CYAN)FdF READY$(WHITE)"
 

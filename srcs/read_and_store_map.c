@@ -6,7 +6,7 @@
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 18:53:09 by psegura-          #+#    #+#             */
-/*   Updated: 2024/02/16 22:48:39 by psegura-         ###   ########.fr       */
+/*   Updated: 2024/02/24 17:53:27 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,9 @@ t_point	store_point_info(int x, int y, char *str)
 	point.x = x;
 	point.y = y;
 	point.height = ft_atoi(str);
+	point.cords[X] = x;
+	point.cords[Y] = y;
+	point.cords[H] = point.height;
 	aux = ft_strchr(str, ',');
 	point.color = NULL;
 	if (aux)

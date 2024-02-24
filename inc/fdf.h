@@ -6,7 +6,7 @@
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 20:20:32 by psegura-          #+#    #+#             */
-/*   Updated: 2024/02/14 20:40:39 by psegura-         ###   ########.fr       */
+/*   Updated: 2024/02/24 17:54:45 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,17 @@
 /*__Libft__*/
 # include "../libft/inc/libft.h"
 
+# define X 0
+# define Y 1
+# define H 2
+
 typedef struct s_point
 {
 	int		x;
 	int		y;
 	int		height;
+	int		cords[3];
+	int		relative[3];
 	char	*color;
 }	t_point;
 

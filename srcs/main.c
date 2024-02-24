@@ -6,7 +6,7 @@
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 20:19:58 by psegura-          #+#    #+#             */
-/*   Updated: 2024/02/16 22:49:47 by psegura-         ###   ########.fr       */
+/*   Updated: 2024/02/24 18:01:52 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,43 @@ void	draw_cross(t_data *img)
 	}
 }
 
+void	bresenham_line(t_data *img, int x0, int y0, int x1, int y1, int color)
+{
+	int	dx;
+	int	dy;
+	int	sx;
+	int	sy;
+	int	err;
+	int	x;
+	int	y;
+	int	e2;
+
+	// printf("act: (%d, %d) old: (%d,%d)\n", x0, y0, x1, y1);
+	dx = abs(x1 - x0);
+	dy = abs(y1 - y0);
+	sx = x0 < x1 ? 1 : -1;
+	sy = y0 < y1 ? 1 : -1;
+	err = dx - dy;
+	x = x0;
+	y = y0;
+	while (x != x1 || y != y1)
+	{
+		printf("(%d, %d)\n", x, y);
+		my_mlx_pixel_put(img, x, y, color);
+		e2 = 2 * err;
+		if (e2 > -dy)
+		{
+			err -= dy;
+			x += sx;
+		}
+		if (e2 < dx)
+		{
+			err += dx;
+			y += sy;
+		}
+	}
+}
+
 void draw_points(t_map *map, t_mlx *mlx)
 {
 	t_data img;
@@ -90,22 +127,34 @@ void draw_points(t_map *map, t_mlx *mlx)
 	printf("mu YYY multii: %f\n", multiplier_y);
 
 	draw_cross(&img);
-
+	printf("window size: (%4d,%4d)\n", SCREEN_WIDTH, SCREEN_HEIGHT);
+	int x_draw = 0;
+	int y_draw = 0;
+	int x_prev = 0;
+	int y_prev = 0;
+	int color = 0;
 	for (int i = 0; i < map->height; i++)
 	{
 		for (int j = 0; j < map->wide; j++)
 		{
 			// Calculate the offset from the center of the map to the center of the window
+			x_prev = x_draw;
+			y_prev = y_draw;
 			int x_offset = (j - map_center_y) * multiplier_x;
 			int y_offset = (i - map_center_x) * multiplier_y;
 
 			// Calculate the coordinates to draw the point
-			double x_draw = window_center_x + x_offset;
-			double y_draw = window_center_y + y_offset;
-
+			x_draw = window_center_x + x_offset;
+			y_draw = window_center_y + y_offset;
 			// Draw the point
-			my_mlx_pixel_put(&img, x_draw, y_draw, get_color(points[i][j].color));
+			printf("(%4d,%4d ) ", x_draw, y_draw);
+			color = get_color(points[i][j].color);
+			if (x_draw >= 0 && y_draw >= 0)
+				my_mlx_pixel_put(&img, x_draw, y_draw, color);
+			if (j != 0)
+				bresenham_line(&img, x_prev, y_prev, x_draw, y_draw, color);
 		}
+		printf("\n");
 	}
 	mlx_put_image_to_window(mlx->mlx, mlx->win, img.img, 0, 0);
 }
@@ -128,6 +177,7 @@ int	main(int argc, char **argv)
 	
 	init_data(&map, argv[1]);
 
+	printf("map_loaded\n");
 	mlx.mlx = mlx_init();
 	mlx.win = mlx_new_window(mlx.mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "FDF");
 
