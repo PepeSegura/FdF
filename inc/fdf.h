@@ -6,7 +6,7 @@
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 20:20:32 by psegura-          #+#    #+#             */
-/*   Updated: 2024/02/25 01:04:34 by psegura-         ###   ########.fr       */
+/*   Updated: 2024/02/25 16:11:41 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,5 +56,7 @@ int		**matrix_multiplication(int size_x, int size_y,
 			const int a[size_x][size_y], const int b[size_x][size_y]);
 
 t_point	**create_map_matrix(t_map *info, char *filename);
+
+void	ft_print_error(char *str);
 
 #endif

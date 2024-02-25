@@ -6,13 +6,13 @@
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 18:53:09 by psegura-          #+#    #+#             */
-/*   Updated: 2024/02/25 00:05:23 by psegura-         ###   ########.fr       */
+/*   Updated: 2024/02/25 16:19:48 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int	wide_map(char *line)
+/* int	wide_map(char *line)
 {
 	char	**aux;
 	int		wide;
@@ -22,6 +22,27 @@ int	wide_map(char *line)
 		return (0);
 	wide = ft_len_matrix(aux);
 	ft_free_matrix(aux);
+	return (wide);
+} */
+
+int	wide_map(char **map)
+{
+	char	**aux;
+	int		wide = 0;
+	int		prev = 0;
+	int		i = -1;
+
+	while (map[++i])
+	{
+		prev = wide;
+		aux = ft_split(map[i], ' ');
+		if (!aux)
+			return (0);
+		wide = ft_len_matrix(aux);
+		ft_free_matrix(aux);
+		if (prev != wide && i != 0)
+			ft_print_error("Not all the lines have the same number of points.");
+	}
 	return (wide);
 }
 
@@ -51,7 +72,7 @@ t_point	**store_map_info(t_map *info, char **map, int i, int j)
 	char	**line_points;
 
 	len = ft_len_matrix(map);
-	wide = wide_map(map[0]);
+	wide = wide_map(map);
 	map_info = (t_point **)ft_calloc((len + 1), sizeof(t_point *));
 	while (map[i] != NULL)
 	{

@@ -90,7 +90,7 @@ void	bresenham_line(t_data *img, int x0, int y0, int x1, int y1, int color)
 	while (x != x1 || y != y1)
 	{
 		// printf("(%d, %d)\n", x, y);
-		if ((x >= 0 && x <= SCREEN_WIDTH) && (y >= 0 && y <= SCREEN_HEIGHT))
+		if ((x >= 0 && x < SCREEN_WIDTH) && (y >= 0 && y < SCREEN_HEIGHT))
 			my_mlx_pixel_put(img, x, y, color);
 		e2 = 2 * err;
 		if (e2 > -delta_y)

@@ -6,7 +6,7 @@
 #    By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/06 16:12:27 by psegura-          #+#    #+#              #
-#    Updated: 2024/02/17 12:49:05 by psegura-         ###   ########.fr        #
+#    Updated: 2024/02/25 16:12:02 by psegura-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ FDF_SRCS =						\
 			main.c				\
 			matrix_operations.c	\
 			read_and_store_map.c\
+			errors.c			\
 		
 SRCS = $(addprefix srcs/, $(FDF_SRCS))
 
