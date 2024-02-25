@@ -6,7 +6,7 @@
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 18:53:09 by psegura-          #+#    #+#             */
-/*   Updated: 2024/02/24 17:53:27 by psegura-         ###   ########.fr       */
+/*   Updated: 2024/02/25 00:05:23 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,6 @@ t_point	store_point_info(int x, int y, char *str)
 		point.color = ft_strdup(aux + 1);
 	return (point);
 }
-// printf("x: [%d] y: [%d] h: [%d] c: [%s]\n",
-//  point.x, point.y, point.height, point.color);
 
 t_point	**store_map_info(t_map *info, char **map, int i, int j)
 {

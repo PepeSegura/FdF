@@ -6,7 +6,7 @@
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 23:11:20 by psegura-          #+#    #+#             */
-/*   Updated: 2024/02/24 17:58:47 by psegura-         ###   ########.fr       */
+/*   Updated: 2024/02/25 00:28:01 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,11 @@
 # define FALSE 			0
 
 /*__Game_Settings__*/
-# define SCREEN_WIDTH	1280
+# define SCREEN_WIDTH	720
 # define SCREEN_HEIGHT	720
 
 # define SCALE			1.25
+
 /*__Keys_&_Events__*/
 # ifdef OSX
 #  define ESC	53
@@ -50,6 +51,9 @@
 #  define LEFT		65361
 #  define DOWN		65364
 #  define RIGHT		65363
+
+#  define SCROLL_UP     4
+#  define SCROLL_DOWN   5
 
 # endif
 #endif

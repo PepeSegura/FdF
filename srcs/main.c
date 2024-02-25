@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/10 20:19:58 by psegura-          #+#    #+#             */
-/*   Updated: 2024/02/24 18:05:42 by psegura-         ###   ########.fr       */
+/*   Created: SPACE24/02/10 SPACE:19:58 by psegura-          #+#    #+#             */
+/*   Updated: SPACE24/02/24 21:55:24 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,41 +70,43 @@ void	draw_cross(t_data *img)
 
 void	bresenham_line(t_data *img, int x0, int y0, int x1, int y1, int color)
 {
-	int	dx;
-	int	dy;
-	int	sx;
-	int	sy;
-	int	err;
-	int	x;
-	int	y;
-	int	e2;
+	const int	delta_x = abs(x1 - x0);
+	const int	delta_y = abs(y1 - y0);
+	int			step_x;
+	int			step_y;
+	int			err;
+	int			x;
+	int			y;
+	int			e2;
 
 	// printf("act: (%d, %d) old: (%d,%d)\n", x0, y0, x1, y1);
-	dx = abs(x1 - x0);
-	dy = abs(y1 - y0);
-	sx = x0 < x1 ? 1 : -1;
-	sy = y0 < y1 ? 1 : -1;
-	err = dx - dy;
+	if ((x1 < 0 || x1 > SCREEN_WIDTH) || (y1 < 0 || y1 > SCREEN_HEIGHT))
+		return ;
+	step_x = x0 < x1 ? 1 : -1;
+	step_y = y0 < y1 ? 1 : -1;
+	err = delta_x - delta_y;
 	x = x0;
 	y = y0;
 	while (x != x1 || y != y1)
 	{
-		printf("(%d, %d)\n", x, y);
-		if (x >= 0 && y >= 0)
+		// printf("(%d, %d)\n", x, y);
+		if ((x >= 0 && x <= SCREEN_WIDTH) && (y >= 0 && y <= SCREEN_HEIGHT))
 			my_mlx_pixel_put(img, x, y, color);
 		e2 = 2 * err;
-		if (e2 > -dy)
+		if (e2 > -delta_y)
 		{
-			err -= dy;
-			x += sx;
+			err -= delta_y;
+			x += step_x;
 		}
-		if (e2 < dx)
+		if (e2 < delta_x)
 		{
-			err += dx;
-			y += sy;
+			err += delta_x;
+			y += step_y;
 		}
 	}
 }
+
+#define SPACE 4
 
 void draw_points(t_map *map, t_mlx *mlx)
 {
@@ -121,19 +123,17 @@ void draw_points(t_map *map, t_mlx *mlx)
 	double window_center_x = (SCREEN_WIDTH / 2);
 	double window_center_y = (SCREEN_HEIGHT / 2);
 
-	// Calculate the multiplier based on the size of the window and the map
-	double multiplier_x = ((double)SCREEN_WIDTH / (double)map->height) / SCALE;
-	double multiplier_y = ((double)SCREEN_HEIGHT / (double)map->wide) / SCALE;
-	printf("mu XXX multii: %f\n", multiplier_x);
-	printf("mu YYY multii: %f\n", multiplier_y);
+	// draw_cross(&img);
 
-	draw_cross(&img);
 	printf("window size: (%4d,%4d)\n", SCREEN_WIDTH, SCREEN_HEIGHT);
 	int x_draw = 0;
 	int y_draw = 0;
 	int x_prev = 0;
 	int y_prev = 0;
 	int color = 0;
+
+	
+	//Draw horizontal lines
 	for (int i = 0; i < map->height; i++)
 	{
 		for (int j = 0; j < map->wide; j++)
@@ -141,21 +141,36 @@ void draw_points(t_map *map, t_mlx *mlx)
 			// Calculate the offset from the center of the map to the center of the window
 			x_prev = x_draw;
 			y_prev = y_draw;
-			int x_offset = (j - map_center_y) * multiplier_x;
-			int y_offset = (i - map_center_x) * multiplier_y;
 
 			// Calculate the coordinates to draw the point
-			x_draw = window_center_x + x_offset;
-			y_draw = window_center_y + y_offset;
-			// Draw the point
-			printf("(%4d,%4d ) ", x_draw, y_draw);
+
+			x_draw = window_center_x + (j - map_center_y) * SPACE;
+			y_draw = window_center_y + (i - map_center_x) * SPACE;
+			y_draw -= points[i][j].height;
+
 			color = get_color(points[i][j].color);
-			if (x_draw >= 0 && y_draw >= 0)
-				my_mlx_pixel_put(&img, x_draw, y_draw, color);
 			if (j != 0)
 				bresenham_line(&img, x_prev, y_prev, x_draw, y_draw, color);
 		}
-		printf("\n");
+	}
+
+	// Draw vertical lines
+	for (int j = 0; j < map->wide; j++)
+	{
+		for (int i = 0; i < map->height; i++)
+		{
+			// Calculate the offset from the center of the map to the center of the window
+			x_prev = x_draw;
+			y_prev = y_draw;
+			// Calculate the coordinates to draw the point
+			x_draw = window_center_x + (j - map_center_y) * SPACE;
+			y_draw = window_center_y + (i - map_center_x) * SPACE;
+			y_draw -= points[i][j].height;
+
+			color = get_color(points[i][j].color);
+			if (i != 0)
+				bresenham_line(&img, x_prev, y_prev, x_draw, y_draw, color);
+		}
 	}
 	mlx_put_image_to_window(mlx->mlx, mlx->win, img.img, 0, 0);
 }
