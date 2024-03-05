@@ -15,6 +15,7 @@
 int ft_input(int keycode, t_mlx *mlx)
 {
 	(void)mlx;
+	printf("key: [%d]\n", keycode);
 	if (keycode == ESC)
 		exit (0);
 	return (0);
@@ -106,7 +107,7 @@ void	bresenham_line(t_data *img, int x0, int y0, int x1, int y1, int color)
 	}
 }
 
-#define SPACE 4
+#define SPACE 5
 
 void draw_points(t_map *map, t_mlx *mlx)
 {
@@ -179,30 +180,61 @@ void	init_data(t_map *map, char *input_file)
 {
 	ft_memset(map, 0, sizeof(t_map));
 	create_map_matrix(map, input_file);
-	printf("map height: [%d] map wide: [%d] map pointer: [%p]\n",
-		map->height, map->wide, map->map);
+	printf("map height: [%d] map wide: [%d]\n", map->height, map->wide);
+}
+
+void init_structs(t_fdf *fdf)
+{
+	ft_memset(fdf, 0, sizeof(t_fdf));
+	fdf->zoom = 5;
+	printf("map wide %d\n", fdf->map.wide);
+}
+
+#include <sys/time.h>
+
+long	get_time(void)
+{
+	struct timeval	time;
+
+	gettimeofday(&time, NULL);
+	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
+}
+
+long	time_dif(long old_time)
+{
+	return (get_time() - old_time);
 }
 
 int	main(int argc, char **argv)
 {
-	t_map	map;
-	t_mlx	mlx;
+	t_fdf	fdf;
+	long	time;
 
 	if (argc != 2)
-		exit(EXIT_FAILURE);
-	
-	init_data(&map, argv[1]);
+		ft_print_error("Not enought arguments.");
 
-	printf("map_loaded\n");
-	mlx.mlx = mlx_init();
-	mlx.win = mlx_new_window(mlx.mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "FDF");
+	time = get_time();
 
-	draw_points(&map, &mlx);
-	mlx_hook(mlx.win, 2, 1L << 0, ft_input, &mlx);
-	mlx_hook(mlx.win, 17, 0, ft_input, &mlx);
+	init_structs(&fdf);
 
-	mlx_loop(mlx.mlx);
+	init_data(&fdf.map, argv[1]);
 
-	exit_program(map.map);
+	printf("time to load map in ms: [%ld]\n", get_time() - time);
+	printf("-----------------------------\n");
+
+	fdf.mlx.mlx = mlx_init();
+	fdf.mlx.win = mlx_new_window(fdf.mlx.mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "FDF");
+
+	time = get_time();
+	draw_points(&fdf.map, &fdf.mlx);
+	printf("time to draw: [%ld]\n", get_time() - time);
+	mlx_hook(fdf.mlx.win, 2, 1L << 0, ft_input, &fdf);
+	mlx_hook(fdf.mlx.win, 17, 0, ft_input, &fdf);
+	mlx_mouse_hook(fdf.mlx.win, ft_input, &fdf);
+
+
+	mlx_loop(fdf.mlx.mlx);
+
+	// exit_program(map.map);
 	return (0);
 }

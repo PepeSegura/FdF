@@ -6,7 +6,7 @@
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 20:20:32 by psegura-          #+#    #+#             */
-/*   Updated: 2024/02/25 16:11:41 by psegura-         ###   ########.fr       */
+/*   Updated: 2024/02/29 12:23:51 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,13 @@ typedef struct s_mlx
 	void	*mlx;
 	void	*win;
 }	t_mlx;
+
+typedef struct s_fdf
+{
+	t_mlx	mlx;
+	t_map	map;
+	int		zoom;
+}	t_fdf;
 
 /*__Matrix_Operations__*/
 void	print_matrix(int size_x, int size_y, int **a);
