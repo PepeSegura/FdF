@@ -5,68 +5,66 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: SPACE24/02/10 SPACE:19:58 by psegura-          #+#    #+#             */
-/*   Updated: SPACE24/02/24 21:55:24 by psegura-         ###   ########.fr       */
+/*   Created: 2024/03/05 19:38:11 by psegura-          #+#    #+#             */
+/*   Updated: 2024/03/05 21:44:41 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int ft_input(int keycode, t_mlx *mlx)
+void	draw_points(t_fdf *fdf, t_mlx *mlx);
+
+void	modify_zoom(int *zoom, int flag)
 {
-	(void)mlx;
+	if (*zoom == 0 && flag != MOVE_LEFT)
+		(*zoom) = 1;
+	if (flag == ZOOM_IN || flag == SCALE_IN)
+		(*zoom) = (*zoom) * 2;
+	else if (flag == ZOOM_OUT || flag == SCALE_OUT)
+		(*zoom) = (*zoom) / 2;
+	if (flag == MOVE_LEFT)
+		(*zoom) = (*zoom - SCREEN_WIDTH / 10);
+	if (flag == MOVE_RIGHT)
+		(*zoom) = (*zoom + SCREEN_WIDTH / 10);
+}
+
+int	ft_exit(void)
+{
+	exit(EXIT_SUCCESS);
+}
+int	ft_input(int keycode, t_fdf *fdf)
+{
 	printf("key: [%d]\n", keycode);
-	if (keycode == ESC)
-		exit (0);
+	if (keycode == UP)
+		modify_zoom(&fdf->zoom, ZOOM_IN);
+	else if (keycode == DOWN)
+		modify_zoom(&fdf->zoom, ZOOM_OUT);
+	else if (keycode == W)
+		modify_zoom(&fdf->scale, SCALE_IN);
+	else if (keycode == S)
+		modify_zoom(&fdf->scale, SCALE_OUT);
+	else if (keycode == LEFT)
+		modify_zoom(&fdf->translate, MOVE_LEFT);
+	else if (keycode == RIGHT)
+		modify_zoom(&fdf->translate, MOVE_RIGHT);
+	else if (keycode == ESC)
+		exit(EXIT_SUCCESS);
+	draw_points(fdf, &fdf->mlx);
 	return (0);
 }
 
 void	exit_program(t_point **map)
 {
 	ft_free_matrix((char **)map);
-	exit (0);
+	exit(0);
 }
-
-typedef struct	s_data {
-	void	*img;
-	char	*addr;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
-}				t_data;
 
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
 	char	*dst;
 
 	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-	*(unsigned int*)dst = color;
-}
-
-int	get_color(char *color)
-{
-	int	final_color;
-
-	final_color = 0x00FFFFFF;
-	if (color)
-		final_color = (int)ft_atol_16(color);
-	return (final_color);
-}
-
-void	draw_cross(t_data *img)
-{
-	const int	height_center = SCREEN_WIDTH / 2;
-	const int	wide_center = SCREEN_HEIGHT / 2;
-
-	printf("center (%d,%d)\n", height_center, wide_center);
-	for (int i = 0; i < SCREEN_WIDTH; i++)
-	{
-		my_mlx_pixel_put(img, i , wide_center, 0x0Fa3a3a3);
-	}
-	for (int i = 0; i < SCREEN_HEIGHT; i++)
-	{
-		my_mlx_pixel_put(img, height_center , i, 0x0Fa3a3a3);
-	}
+	*(unsigned int *)dst = color;
 }
 
 void	bresenham_line(t_data *img, int x0, int y0, int x1, int y1, int color)
@@ -107,37 +105,32 @@ void	bresenham_line(t_data *img, int x0, int y0, int x1, int y1, int color)
 	}
 }
 
-#define SPACE 5
-
-void draw_points(t_map *map, t_mlx *mlx)
+void draw_points(t_fdf *fdf, t_mlx *mlx)
 {
 	t_data img;
-	t_point **points = map->map;
+	t_point **points = fdf->map.map;
+	t_map	map = fdf->map;
 
 	img.img = mlx_new_image(mlx->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
 
 	// Calculate the center of the map
-	int map_center_x = map->height / 2;
-	int map_center_y = map->wide / 2;
+	int map_center_x = map.height / 2;
+	int map_center_y = map.wide / 2;
 
 	double window_center_x = (SCREEN_WIDTH / 2);
 	double window_center_y = (SCREEN_HEIGHT / 2);
-
-	// draw_cross(&img);
 
 	printf("window size: (%4d,%4d)\n", SCREEN_WIDTH, SCREEN_HEIGHT);
 	int x_draw = 0;
 	int y_draw = 0;
 	int x_prev = 0;
 	int y_prev = 0;
-	int color = 0;
-
 	
 	//Draw horizontal lines
-	for (int i = 0; i < map->height; i++)
+	for (int i = 0; i < map.height; i++)
 	{
-		for (int j = 0; j < map->wide; j++)
+		for (int j = 0; j < map.wide; j++)
 		{
 			// Calculate the offset from the center of the map to the center of the window
 			x_prev = x_draw;
@@ -145,96 +138,60 @@ void draw_points(t_map *map, t_mlx *mlx)
 
 			// Calculate the coordinates to draw the point
 
-			x_draw = window_center_x + (j - map_center_y) * SPACE;
-			y_draw = window_center_y + (i - map_center_x) * SPACE;
-			y_draw -= points[i][j].height;
+			x_draw = (window_center_x + (j - map_center_y) * fdf->zoom) + fdf->translate;
+			y_draw = (window_center_y + (i - map_center_x) * fdf->zoom);
+			y_draw -= points[i][j].height * fdf->scale;
 
-			color = get_color(points[i][j].color);
 			if (j != 0)
-				bresenham_line(&img, x_prev, y_prev, x_draw, y_draw, color);
+				bresenham_line(&img, x_prev, y_prev, x_draw, y_draw, points[i][j].color);
 		}
 	}
 
 	// Draw vertical lines
-	for (int j = 0; j < map->wide; j++)
+	for (int j = 0; j < map.wide; j++)
 	{
-		for (int i = 0; i < map->height; i++)
+		for (int i = 0; i < map.height; i++)
 		{
 			// Calculate the offset from the center of the map to the center of the window
 			x_prev = x_draw;
 			y_prev = y_draw;
 			// Calculate the coordinates to draw the point
-			x_draw = window_center_x + (j - map_center_y) * SPACE;
-			y_draw = window_center_y + (i - map_center_x) * SPACE;
-			y_draw -= points[i][j].height;
+			x_draw = (window_center_x + (j - map_center_y) * fdf->zoom) + fdf->translate;
+			y_draw = (window_center_y + (i - map_center_x) * fdf->zoom);
+			y_draw -= points[i][j].height * fdf->scale;
 
-			color = get_color(points[i][j].color);
 			if (i != 0)
-				bresenham_line(&img, x_prev, y_prev, x_draw, y_draw, color);
+				bresenham_line(&img, x_prev, y_prev, x_draw, y_draw, points[i][j].color);
 		}
 	}
 	mlx_put_image_to_window(mlx->mlx, mlx->win, img.img, 0, 0);
 }
 
-void	init_data(t_map *map, char *input_file)
+void	init_data(t_fdf *fdf, char *input_file)
 {
-	ft_memset(map, 0, sizeof(t_map));
-	create_map_matrix(map, input_file);
-	printf("map height: [%d] map wide: [%d]\n", map->height, map->wide);
-}
-
-void init_structs(t_fdf *fdf)
-{
-	ft_memset(fdf, 0, sizeof(t_fdf));
-	fdf->zoom = 5;
-	printf("map wide %d\n", fdf->map.wide);
-}
-
-#include <sys/time.h>
-
-long	get_time(void)
-{
-	struct timeval	time;
-
-	gettimeofday(&time, NULL);
-	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
-}
-
-long	time_dif(long old_time)
-{
-	return (get_time() - old_time);
+	create_map_matrix(&fdf->map, input_file);
+	if (fdf->map.wide == 0 || fdf->map.height == 0)
+		ft_print_error("Empty map.");
+	fdf->zoom = SCREEN_WIDTH / fdf->map.wide;
+	printf("map height: [%d] map wide: [%d]\n", fdf->map.height, fdf->map.wide);
+	printf("scale: %d\n", fdf->zoom);
 }
 
 int	main(int argc, char **argv)
 {
 	t_fdf	fdf;
-	long	time;
 
 	if (argc != 2)
 		ft_print_error("Not enought arguments.");
-
-	time = get_time();
-
-	init_structs(&fdf);
-
-	init_data(&fdf.map, argv[1]);
-
-	printf("time to load map in ms: [%ld]\n", get_time() - time);
-	printf("-----------------------------\n");
-
+	ft_memset(&fdf, 0, sizeof(t_fdf));
+	fdf.zoom = 2;
+	fdf.scale = 1;
+	init_data(&fdf, argv[1]);
 	fdf.mlx.mlx = mlx_init();
 	fdf.mlx.win = mlx_new_window(fdf.mlx.mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "FDF");
-
-	time = get_time();
-	draw_points(&fdf.map, &fdf.mlx);
-	printf("time to draw: [%ld]\n", get_time() - time);
+	draw_points(&fdf, &fdf.mlx);
 	mlx_hook(fdf.mlx.win, 2, 1L << 0, ft_input, &fdf);
-	mlx_hook(fdf.mlx.win, 17, 0, ft_input, &fdf);
-	mlx_mouse_hook(fdf.mlx.win, ft_input, &fdf);
-
-
+	mlx_hook(fdf.mlx.win, 17, 0, ft_exit, &fdf);
 	mlx_loop(fdf.mlx.mlx);
-
-	// exit_program(map.map);
 	return (0);
 }

@@ -6,24 +6,11 @@
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 18:53:09 by psegura-          #+#    #+#             */
-/*   Updated: 2024/02/25 16:19:48 by psegura-         ###   ########.fr       */
+/*   Updated: 2024/03/05 18:50:33 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-
-/* int	wide_map(char *line)
-{
-	char	**aux;
-	int		wide;
-
-	aux = ft_split(line, ' ');
-	if (!aux)
-		return (0);
-	wide = ft_len_matrix(aux);
-	ft_free_matrix(aux);
-	return (wide);
-} */
 
 int	wide_map(char **map)
 {
@@ -46,6 +33,13 @@ int	wide_map(char **map)
 	return (wide);
 }
 
+int	get_color(char *color)
+{
+	if (color == NULL)
+		return (0x00FFFFFF);
+	return (ft_atol_16(color + 1));
+}
+
 t_point	store_point_info(int x, int y, char *str)
 {
 	t_point	point;
@@ -54,13 +48,8 @@ t_point	store_point_info(int x, int y, char *str)
 	point.x = x;
 	point.y = y;
 	point.height = ft_atoi(str);
-	point.cords[X] = x;
-	point.cords[Y] = y;
-	point.cords[H] = point.height;
 	aux = ft_strchr(str, ',');
-	point.color = NULL;
-	if (aux)
-		point.color = ft_strdup(aux + 1);
+	point.color = get_color(aux);
 	return (point);
 }
 

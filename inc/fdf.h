@@ -6,7 +6,7 @@
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 20:20:32 by psegura-          #+#    #+#             */
-/*   Updated: 2024/02/29 12:23:51 by psegura-         ###   ########.fr       */
+/*   Updated: 2024/03/05 21:39:10 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,31 @@
 /*__Libft__*/
 # include "../libft/inc/libft.h"
 
-# define X 0
-# define Y 1
-# define H 2
+enum e_modes {
+  ZOOM_IN,
+  ZOOM_OUT,
+  SCALE_IN,
+  SCALE_OUT,
+  MOVE_UP,
+  MOVE_DOWN,
+  MOVE_RIGHT,
+  MOVE_LEFT,
+};
+
+typedef struct	s_data {
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+}				t_data;
 
 typedef struct s_point
 {
 	int		x;
 	int		y;
 	int		height;
-	int		cords[3];
-	int		relative[3];
-	char	*color;
+	int		color;
 }	t_point;
 
 typedef struct s_map
@@ -52,6 +65,8 @@ typedef struct s_fdf
 	t_mlx	mlx;
 	t_map	map;
 	int		zoom;
+	int		scale;
+	int		translate;
 }	t_fdf;
 
 /*__Matrix_Operations__*/
