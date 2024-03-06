@@ -6,7 +6,7 @@
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 20:20:32 by psegura-          #+#    #+#             */
-/*   Updated: 2024/03/05 21:39:10 by psegura-         ###   ########.fr       */
+/*   Updated: 2024/03/06 02:32:18 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,8 @@ typedef struct s_fdf
 	t_map	map;
 	int		zoom;
 	int		scale;
-	int		translate;
+	int		translate_x;
+	int		translate_y;
 }	t_fdf;
 
 /*__Matrix_Operations__*/

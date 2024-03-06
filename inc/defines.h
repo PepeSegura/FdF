@@ -6,7 +6,7 @@
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 23:11:20 by psegura-          #+#    #+#             */
-/*   Updated: 2024/03/05 20:32:19 by psegura-         ###   ########.fr       */
+/*   Updated: 2024/03/06 02:41:50 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@
 #  define DOWN		65364
 #  define RIGHT		65363
 
+# define PLUS      43 
+# define MINUS     45 
 
 # endif
 #endif
