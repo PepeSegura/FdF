@@ -6,7 +6,7 @@
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 20:20:32 by psegura-          #+#    #+#             */
-/*   Updated: 2024/03/06 02:32:18 by psegura-         ###   ########.fr       */
+/*   Updated: 2024/03/06 04:15:46 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,5 +81,7 @@ int		**matrix_multiplication(int size_x, int size_y,
 t_point	**create_map_matrix(t_map *info, char *filename);
 
 void	ft_print_error(char *str);
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
+void	bresenham_line(t_data *img, t_point prev, t_point new);
 
 #endif

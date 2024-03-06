@@ -6,7 +6,7 @@
 #    By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/06 16:12:27 by psegura-          #+#    #+#              #
-#    Updated: 2024/03/05 20:46:36 by psegura-         ###   ########.fr        #
+#    Updated: 2024/03/06 03:50:46 by psegura-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ NAME = fdf
 
 FDF_SRCS =						\
 			main.c				\
+			bresenham.c			\
 			matrix_operations.c	\
 			read_and_store_map.c\
 			errors.c			\

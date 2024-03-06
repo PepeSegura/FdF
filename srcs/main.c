@@ -6,7 +6,7 @@
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 19:38:11 by psegura-          #+#    #+#             */
-/*   Updated: 2024/03/06 03:04:00 by psegura-         ###   ########.fr       */
+/*   Updated: 2024/03/06 04:30:49 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,44 +87,6 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-void	bresenham_line(t_data *img, int x0, int y0, int x1, int y1, int color)
-{
-	const int	delta_x = abs(x1 - x0);
-	const int	delta_y = abs(y1 - y0);
-	int			step_x;
-	int			step_y;
-	int			err;
-	int			x;
-	int			y;
-	int			e2;
-
-	// printf("act: (%d, %d) old: (%d,%d)\n", x0, y0, x1, y1);
-	if ((x1 < 0 || x1 > SCREEN_WIDTH) || (y1 < 0 || y1 > SCREEN_HEIGHT))
-		return ;
-	step_x = x0 < x1 ? 1 : -1;
-	step_y = y0 < y1 ? 1 : -1;
-	err = delta_x - delta_y;
-	x = x0;
-	y = y0;
-	while (x != x1 || y != y1)
-	{
-		// printf("(%d, %d)\n", x, y);
-		if ((x >= 0 && x < SCREEN_WIDTH) && (y >= 0 && y < SCREEN_HEIGHT))
-			my_mlx_pixel_put(img, x, y, color);
-		e2 = 2 * err;
-		if (e2 > -delta_y)
-		{
-			err -= delta_y;
-			x += step_x;
-		}
-		if (e2 < delta_x)
-		{
-			err += delta_x;
-			y += step_y;
-		}
-	}
-}
-
 // cos(θ)	-sin(θ)	0		X
 // sin(θ)	 cos(θ)	0		Y
 // 0			0	1		Z
@@ -150,6 +112,8 @@ void draw_points(t_fdf *fdf, t_mlx *mlx)
 	t_data img;
 	t_point **points = fdf->map.map;
 	t_map	map = fdf->map;
+	t_point	prev;
+	t_point	new;
 
 	img.img = mlx_new_image(mlx->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
@@ -162,50 +126,41 @@ void draw_points(t_fdf *fdf, t_mlx *mlx)
 	double window_center_y = (SCREEN_HEIGHT / 2);
 
 	printf("window size: (%4d,%4d)\n", SCREEN_WIDTH, SCREEN_HEIGHT);
-	int x_draw = 0;
-	int y_draw = 0;
-	int x_prev = 0;
-	int y_prev = 0;
-	
+
 	//Draw horizontal lines
 	for (int i = 0; i < map.height; i++)
 	{
 		for (int j = 0; j < map.wide; j++)
 		{
-			// Calculate the offset from the center of the map to the center of the window
-			x_prev = x_draw;
-			y_prev = y_draw;
-			// Calculate the coordinates to draw the point
-			x_draw = (window_center_x + (j - map_center_y) * fdf->zoom) ;
-			y_draw = (window_center_y + (i - map_center_x) * fdf->zoom);
-			y_draw -= points[i][j].height * fdf->scale;
-			rotate_point(&x_draw, &y_draw, &points[i][j].height);
-			x_draw += fdf->translate_x;
-			y_draw += fdf->translate_y;
-
+			prev.x = new.x;
+			prev.y = new.y;
+			new.x = (window_center_x + (j - map_center_y) * fdf->zoom);
+			new.y = (window_center_y + (i - map_center_x) * fdf->zoom);
+			new.y -= points[i][j].height * fdf->scale;
+			rotate_point(&new.x, &new.y, &points[i][j].height);
+			new.x += fdf->translate_x;
+			new.y += fdf->translate_y;
+			new.color = points[i][j].color;
 			if (j != 0)
-				bresenham_line(&img, x_prev, y_prev, x_draw, y_draw, points[i][j].color);
+				bresenham_line(&img, prev, new);
 		}
 	}
-
 	// Draw vertical lines
 	for (int j = 0; j < map.wide; j++)
 	{
 		for (int i = 0; i < map.height; i++)
 		{
-			// Calculate the offset from the center of the map to the center of the window
-			x_prev = x_draw;
-			y_prev = y_draw;
-			// Calculate the coordinates to draw the point
-			x_draw = (window_center_x + (j - map_center_y) * fdf->zoom);
-			y_draw = (window_center_y + (i - map_center_x) * fdf->zoom);
-			y_draw -= points[i][j].height * fdf->scale;
-			rotate_point(&x_draw, &y_draw, &points[i][j].height);
-			x_draw += fdf->translate_x;
-			y_draw += fdf->translate_y;
-
+			prev.x = new.x;
+			prev.y = new.y;
+			new.x = (window_center_x + (j - map_center_y) * fdf->zoom);
+			new.y = (window_center_y + (i - map_center_x) * fdf->zoom);
+			new.y -= points[i][j].height * fdf->scale;
+			rotate_point(&new.x, &new.y, &points[i][j].height);
+			new.x += fdf->translate_x;
+			new.y += fdf->translate_y;
+			new.color = points[i][j].color;
 			if (i != 0)
-				bresenham_line(&img, x_prev, y_prev, x_draw, y_draw, points[i][j].color);
+				bresenham_line(&img, prev, new);
 		}
 	}
 	mlx_put_image_to_window(mlx->mlx, mlx->win, img.img, 0, 0);
