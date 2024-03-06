@@ -6,7 +6,7 @@
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 23:11:20 by psegura-          #+#    #+#             */
-/*   Updated: 2024/03/06 02:41:50 by psegura-         ###   ########.fr       */
+/*   Updated: 2024/03/06 17:53:01 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,16 @@
 #  define SCROLL_DOWN   5
 
 #  define UP			126
-#  define LEFT			123
 #  define DOWN			125
+#  define LEFT			123
 #  define RIGHT			124
-#  define DESTROY 		17
+
+# define PLUS      30
+# define MINUS     44
+
+# define R	15
+
+# define DESTROY 		17
 
 # else
 #  ifndef LINUX
@@ -52,12 +58,16 @@
 #  define SCROLL_DOWN   5
 
 #  define UP		65362
-#  define LEFT		65361
 #  define DOWN		65364
+#  define LEFT		65361
 #  define RIGHT		65363
 
-# define PLUS      43 
-# define MINUS     45 
+#  define PLUS      43 
+#  define MINUS     45 
+
+# define R	114
+
+#  define DESTROY 		17
 
 # endif
 #endif

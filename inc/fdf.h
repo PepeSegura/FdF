@@ -6,7 +6,7 @@
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 20:20:32 by psegura-          #+#    #+#             */
-/*   Updated: 2024/03/06 04:15:46 by psegura-         ###   ########.fr       */
+/*   Updated: 2024/03/06 17:05:10 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,16 +58,20 @@ typedef struct s_mlx
 {
 	void	*mlx;
 	void	*win;
+	
 }	t_mlx;
 
 typedef struct s_fdf
 {
 	t_mlx	mlx;
 	t_map	map;
+	t_data	img;
 	int		zoom;
 	int		scale;
 	int		translate_x;
 	int		translate_y;
+	int		screen_width;
+	int		screen_height;
 }	t_fdf;
 
 /*__Matrix_Operations__*/
@@ -82,6 +86,6 @@ t_point	**create_map_matrix(t_map *info, char *filename);
 
 void	ft_print_error(char *str);
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
-void	bresenham_line(t_data *img, t_point prev, t_point new);
+void	bresenham_line(t_fdf *fdf, t_point prev, t_point new);
 
 #endif

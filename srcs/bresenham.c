@@ -6,7 +6,7 @@
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 03:11:32 by psegura-          #+#    #+#             */
-/*   Updated: 2024/03/06 04:29:57 by psegura-         ###   ########.fr       */
+/*   Updated: 2024/03/06 17:23:57 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,20 +42,19 @@ void	init_bresenham(t_bresenham *b, t_point prev, t_point new)
 	b->y = b->prev.y;
 }
 
-void	bresenham_line(t_data *img, t_point prev, t_point new)
+void	bresenham_line(t_fdf *fdf, t_point prev, t_point new)
 {
 	t_bresenham	b;
 	int			e2;
 
-	if ((new.x < 0 || new.x > SCREEN_WIDTH)
-		|| (new.y < 0 || new.y > SCREEN_HEIGHT))
+	if ((new.x < 0 && prev.x < 0) || (new.x > fdf->screen_width && prev.x > fdf->screen_width) || (new.y < 0 && prev.y < 0) || (new.y > fdf->screen_height && prev.y > fdf->screen_height))
 		return ;
 	init_bresenham(&b, prev, new);
 	while (b.x != new.x || b.y != new.y)
 	{
-		if ((b.x >= 0 && b.x < SCREEN_WIDTH)
-			&& (b.y >= 0 && b.y < SCREEN_HEIGHT))
-			my_mlx_pixel_put(img, b.x, b.y, new.color);
+		if ((b.x >= 0 && b.x < fdf->screen_width)
+			&& (b.y >= 0 && b.y < fdf->screen_height))
+			my_mlx_pixel_put(&fdf->img, b.x, b.y, new.color);
 		e2 = 2 * b.err;
 		if (e2 > -b.delta_y)
 		{

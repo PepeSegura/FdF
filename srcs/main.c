@@ -6,7 +6,7 @@
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 19:38:11 by psegura-          #+#    #+#             */
-/*   Updated: 2024/03/06 04:30:49 by psegura-         ###   ########.fr       */
+/*   Updated: 2024/03/06 17:58:03 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	draw_points(t_fdf *fdf, t_mlx *mlx);
 
-void	modify_zoom(int *value, int flag)
+void	modify_zoom(int *value, int flag, t_fdf *fdf)
 {
 	if (flag == ZOOM_IN || flag == SCALE_IN)
 		(*value) = (*value) * 2;
@@ -22,19 +22,21 @@ void	modify_zoom(int *value, int flag)
 		(*value) = (*value) / 2;
 	if (*value == 0 && flag != SCALE_OUT)
 		(*value) = 1;
+	if (*value > fdf->screen_width / 2)
+		(*value) = fdf->screen_width / 2;
 
 }
 
-void	translation(int *value, int flag)
+void	translation(int *value, int flag, t_fdf *fdf)
 {
 	if (flag == MOVE_LEFT)
-		(*value) = (*value - SCREEN_WIDTH / 10);
+		(*value) = (*value - fdf->screen_width / 10);
 	if (flag == MOVE_RIGHT)
-		(*value) = (*value + SCREEN_WIDTH / 10);
+		(*value) = (*value + fdf->screen_width / 10);
 	if (flag == MOVE_UP)
-		(*value) = (*value - SCREEN_HEIGHT / 10);
+		(*value) = (*value - fdf->screen_height / 10);
 	if (flag == MOVE_DOWN)
-		(*value) = (*value + SCREEN_HEIGHT / 10);
+		(*value) = (*value + fdf->screen_height / 10);
 }
 
 int	ft_exit(void)
@@ -45,27 +47,27 @@ int	ft_input(int keycode, t_fdf *fdf)
 {
 	printf("key: [%d]\n", keycode);
 	if (keycode == PLUS)
-		modify_zoom(&fdf->zoom, ZOOM_IN);
+		modify_zoom(&fdf->zoom, ZOOM_IN, fdf);
 	else if (keycode == MINUS)
-		modify_zoom(&fdf->zoom, ZOOM_OUT);
+		modify_zoom(&fdf->zoom, ZOOM_OUT, fdf);
 	else if (keycode == W)
-		modify_zoom(&fdf->scale, SCALE_IN);
+		modify_zoom(&fdf->scale, SCALE_IN, fdf);
 	else if (keycode == S)
-		modify_zoom(&fdf->scale, SCALE_OUT);
+		modify_zoom(&fdf->scale, SCALE_OUT, fdf);
 	else if (keycode == UP)
-		translation(&fdf->translate_y, MOVE_UP);
+		translation(&fdf->translate_y, MOVE_UP, fdf);
 	else if (keycode == DOWN)
-		translation(&fdf->translate_y, MOVE_DOWN);
+		translation(&fdf->translate_y, MOVE_DOWN, fdf);
 	else if (keycode == LEFT)
-		translation(&fdf->translate_x, MOVE_LEFT);
+		translation(&fdf->translate_x, MOVE_LEFT, fdf);
 	else if (keycode == RIGHT)
-		translation(&fdf->translate_x, MOVE_RIGHT);
-	else if (keycode == 114)
+		translation(&fdf->translate_x, MOVE_RIGHT, fdf);
+	else if (keycode == R)
 	{
 		fdf->scale = 1;
 		fdf->translate_x = 0;
 		fdf->translate_y = 0;
-		fdf->zoom = SCREEN_WIDTH / fdf->map.wide;
+		fdf->zoom = (fdf->screen_width / fdf->map.wide) / 2;
 	}
 	else if (keycode == ESC)
 		exit(EXIT_SUCCESS);
@@ -107,25 +109,41 @@ void	rotate_point(int *x, int *y, int *z)
 	(*z) = final_z;
 }
 
+void	clear_img(t_fdf *fdf)
+{
+	int	i;
+	int j;
+
+	i = 0;
+	while (i < fdf->screen_width)
+	{
+		j = 0;
+		while (j < fdf->screen_height)
+		{
+			my_mlx_pixel_put(&fdf->img, i, j, 0x0);
+			j++;
+		}
+		i++;
+	}
+}
+
 void draw_points(t_fdf *fdf, t_mlx *mlx)
 {
-	t_data img;
 	t_point **points = fdf->map.map;
 	t_map	map = fdf->map;
 	t_point	prev;
 	t_point	new;
 
-	img.img = mlx_new_image(mlx->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
-	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
+	clear_img(fdf);
 
 	// Calculate the center of the map
 	int map_center_x = map.height / 2;
 	int map_center_y = map.wide / 2;
 
-	double window_center_x = (SCREEN_WIDTH / 2);
-	double window_center_y = (SCREEN_HEIGHT / 2);
+	double window_center_x = (fdf->screen_width / 2);
+	double window_center_y = (fdf->screen_height / 2);
 
-	printf("window size: (%4d,%4d)\n", SCREEN_WIDTH, SCREEN_HEIGHT);
+	printf("window size: (%4d,%4d)\n", fdf->screen_width, fdf->screen_height);
 
 	//Draw horizontal lines
 	for (int i = 0; i < map.height; i++)
@@ -142,7 +160,7 @@ void draw_points(t_fdf *fdf, t_mlx *mlx)
 			new.y += fdf->translate_y;
 			new.color = points[i][j].color;
 			if (j != 0)
-				bresenham_line(&img, prev, new);
+				bresenham_line(fdf, prev, new);
 		}
 	}
 	// Draw vertical lines
@@ -160,10 +178,31 @@ void draw_points(t_fdf *fdf, t_mlx *mlx)
 			new.y += fdf->translate_y;
 			new.color = points[i][j].color;
 			if (i != 0)
-				bresenham_line(&img, prev, new);
+				bresenham_line(fdf, prev, new);
 		}
 	}
-	mlx_put_image_to_window(mlx->mlx, mlx->win, img.img, 0, 0);
+	mlx_put_image_to_window(mlx->mlx, mlx->win, fdf->img.img, 0, 0);
+	
+}
+
+void	set_screen_data(int *screen_width, int *screen_height)
+{
+	CGDirectDisplayID	display_id;
+	CGRect				screen_bounds;
+	int	width;
+	int	height;
+
+	display_id = kCGDirectMainDisplay;
+	screen_bounds = CGDisplayBounds(display_id);
+	width = CGRectGetWidth(screen_bounds);
+	height = CGRectGetHeight(screen_bounds);
+	(*screen_width) =  SCREEN_WIDTH;
+	(*screen_height) = SCREEN_HEIGHT;
+	if (SCREEN_WIDTH > width)
+		(*screen_width) = width;
+	if (SCREEN_HEIGHT > height)
+		(*screen_height) = height;
+	
 }
 
 void	init_data(t_fdf *fdf, char *input_file)
@@ -171,10 +210,15 @@ void	init_data(t_fdf *fdf, char *input_file)
 	create_map_matrix(&fdf->map, input_file);
 	if (fdf->map.wide == 0 || fdf->map.height == 0)
 		ft_print_error("Empty map.");
-	fdf->zoom = (SCREEN_WIDTH / fdf->map.wide) / 2;
+	set_screen_data(&fdf->screen_width, &fdf->screen_height);
+	fdf->zoom = (fdf->screen_width / fdf->map.wide) / 2;
 	fdf->scale = 1;
 	printf("map height: [%d] map wide: [%d]\n", fdf->map.height, fdf->map.wide);
 	printf("scale: %d\n", fdf->zoom);
+	fdf->mlx.mlx = mlx_init();
+	fdf->mlx.win = mlx_new_window(fdf->mlx.mlx, fdf->screen_width, fdf->screen_height, "FDF");
+	fdf->img.img = mlx_new_image(fdf->mlx.mlx, fdf->screen_width, fdf->screen_height);
+	fdf->img.addr = mlx_get_data_addr(fdf->img.img, &fdf->img.bits_per_pixel, &fdf->img.line_length, &fdf->img.endian);
 }
 
 int	main(int argc, char **argv)
@@ -185,8 +229,7 @@ int	main(int argc, char **argv)
 		ft_print_error("Not enought arguments.");
 	ft_memset(&fdf, 0, sizeof(t_fdf));
 	init_data(&fdf, argv[1]);
-	fdf.mlx.mlx = mlx_init();
-	fdf.mlx.win = mlx_new_window(fdf.mlx.mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "FDF");
+
 	draw_points(&fdf, &fdf.mlx);
 	mlx_hook(fdf.mlx.win, 2, 1L << 0, ft_input, &fdf);
 	mlx_hook(fdf.mlx.win, 17, 0, ft_exit, &fdf);
