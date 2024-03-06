@@ -6,7 +6,7 @@
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 18:53:09 by psegura-          #+#    #+#             */
-/*   Updated: 2024/03/06 15:50:33 by psegura-         ###   ########.fr       */
+/*   Updated: 2024/03/06 18:09:29 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,13 @@
 int	wide_map(char **map)
 {
 	char	**aux;
-	int		wide = 0;
-	int		prev = 0;
-	int		i = -1;
+	int		wide;
+	int		prev;
+	int		i;
 
+	wide = 0;
+	prev = 0;
+	i = -1;
 	while (map[++i])
 	{
 		prev = wide;

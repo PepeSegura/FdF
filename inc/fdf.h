@@ -6,7 +6,7 @@
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 20:20:32 by psegura-          #+#    #+#             */
-/*   Updated: 2024/03/06 17:05:10 by psegura-         ###   ########.fr       */
+/*   Updated: 2024/03/06 18:11:43 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,20 @@
 /*__Libft__*/
 # include "../libft/inc/libft.h"
 
-enum e_modes {
-  ZOOM_IN,
-  ZOOM_OUT,
-  SCALE_IN,
-  SCALE_OUT,
-  MOVE_UP,
-  MOVE_DOWN,
-  MOVE_RIGHT,
-  MOVE_LEFT,
+enum e_modes
+{
+	ZOOM_IN,
+	ZOOM_OUT,
+	SCALE_IN,
+	SCALE_OUT,
+	MOVE_UP,
+	MOVE_DOWN,
+	MOVE_RIGHT,
+	MOVE_LEFT,
 };
 
-typedef struct	s_data {
+typedef struct s_data
+{
 	void	*img;
 	char	*addr;
 	int		bits_per_pixel;
@@ -47,6 +49,19 @@ typedef struct s_point
 	int		color;
 }	t_point;
 
+typedef struct s_bresenham
+{
+	t_point	prev;
+	t_point	new;
+	int		delta_x;
+	int		delta_y;
+	int		step_x;
+	int		step_y;
+	int		err;
+	int		x;
+	int		y;
+}	t_bresenham;
+
 typedef struct s_map
 {
 	t_point	**map;
@@ -58,7 +73,6 @@ typedef struct s_mlx
 {
 	void	*mlx;
 	void	*win;
-	
 }	t_mlx;
 
 typedef struct s_fdf
