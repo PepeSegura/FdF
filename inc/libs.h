@@ -6,7 +6,7 @@
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 23:18:22 by psegura-          #+#    #+#             */
-/*   Updated: 2024/03/06 17:17:26 by psegura-         ###   ########.fr       */
+/*   Updated: 2024/03/06 20:47:36 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,10 @@ Malloc, Free, Exit
 
 /* ______BONUS_______
 */
-# include <CoreGraphics/CoreGraphics.h>
+# ifdef OSX
+#  include <CoreGraphics/CoreGraphics.h>
+# else
+#  include <X11/Xlib.h>
+# endif
 
 #endif

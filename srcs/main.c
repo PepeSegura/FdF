@@ -6,7 +6,7 @@
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 19:38:11 by psegura-          #+#    #+#             */
-/*   Updated: 2024/03/06 17:58:03 by psegura-         ###   ########.fr       */
+/*   Updated: 2024/03/06 20:49:10 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,6 +185,7 @@ void draw_points(t_fdf *fdf, t_mlx *mlx)
 	
 }
 
+#ifdef OSX
 void	set_screen_data(int *screen_width, int *screen_height)
 {
 	CGDirectDisplayID	display_id;
@@ -204,6 +205,13 @@ void	set_screen_data(int *screen_width, int *screen_height)
 		(*screen_height) = height;
 	
 }
+#else
+void	set_screen_data(int *screen_width, int *screen_height)
+{
+	(*screen_width) = SCREEN_WIDTH;
+	(*screen_height) = SCREEN_HEIGHT;
+}
+#endif
 
 void	init_data(t_fdf *fdf, char *input_file)
 {
