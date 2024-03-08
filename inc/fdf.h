@@ -6,7 +6,7 @@
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 20:20:32 by psegura-          #+#    #+#             */
-/*   Updated: 2024/03/08 20:05:02 by psegura-         ###   ########.fr       */
+/*   Updated: 2024/03/08 20:11:15 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ typedef struct s_fdf
 	int		screen_width;
 	int		screen_height;
 }	t_fdf;
-
 
 t_point	**create_map_matrix(t_map *info, char *filename);
 

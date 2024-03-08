@@ -6,7 +6,7 @@
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 19:38:11 by psegura-          #+#    #+#             */
-/*   Updated: 2024/03/08 20:09:26 by psegura-         ###   ########.fr       */
+/*   Updated: 2024/03/08 20:15:18 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,12 @@ void	init_data(t_fdf *fdf, char *input_file)
 	fdf->zoom = (fdf->screen_width / fdf->map.wide) / 2;
 	fdf->scale = 1;
 	fdf->mlx.mlx = mlx_init();
-	fdf->mlx.win = mlx_new_window(fdf->mlx.mlx, fdf->screen_width, fdf->screen_height, "FDF");
-	fdf->img.img = mlx_new_image(fdf->mlx.mlx, fdf->screen_width, fdf->screen_height);
-	fdf->img.addr = mlx_get_data_addr(fdf->img.img, &fdf->img.bits_per_pixel, &fdf->img.line_length, &fdf->img.endian);
-}
-
-void f(void)
-{
-	system("leaks -q fdf");
+	fdf->mlx.win = mlx_new_window(fdf->mlx.mlx,
+			fdf->screen_width, fdf->screen_height, "FDF");
+	fdf->img.img = mlx_new_image(fdf->mlx.mlx,
+			fdf->screen_width, fdf->screen_height);
+	fdf->img.addr = mlx_get_data_addr(fdf->img.img,
+			&fdf->img.bits_per_pixel, &fdf->img.line_length, &fdf->img.endian);
 }
 
 void	create_hooks(t_fdf *fdf)
@@ -47,7 +45,6 @@ int	main(int argc, char **argv)
 {
 	t_fdf	fdf;
 
-	// atexit(f);
 	if (argc != 2)
 		ft_print_error("Not enought arguments.");
 	init_data(&fdf, argv[1]);

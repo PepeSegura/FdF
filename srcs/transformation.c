@@ -6,7 +6,7 @@
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 17:55:12 by psegura-          #+#    #+#             */
-/*   Updated: 2024/03/08 19:40:31 by psegura-         ###   ########.fr       */
+/*   Updated: 2024/03/08 20:11:44 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,19 @@ float	fast_sqrt(float x)
 {
 	float	xhalf;
 	int		i;
-	float	prev = x;
 
 	xhalf = 0.5f * x;
-	i = *(int*)&x;
+	i = *(int *)&x;
 	i = 0x5f3759df - (i >> 1);
-	x = *(float*)&i;
+	x = *(float *)&i;
 	x = x * (1.5f - (xhalf * x * x));
 	x = x * (1.5f - (xhalf * x * x));
 	x = 1 / x;
-
-	printf("sqrt: [%f] -> [%f]\n", prev, x);
 	return (x);
 }
 
 void	rotate_point(int *x, int *y, int *z)
 {
-	
 	const double	theta = M_PI / 4.0;
 	double			final_x;
 	double			final_y;
