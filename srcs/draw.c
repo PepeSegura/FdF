@@ -6,13 +6,13 @@
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 19:41:36 by psegura-          #+#    #+#             */
-/*   Updated: 2024/03/08 22:07:18 by psegura-         ###   ########.fr       */
+/*   Updated: 2024/03/08 22:38:37 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
+void	my_mlx_pixel_put(t_img *data, int x, int y, int color)
 {
 	char	*dst;
 
@@ -102,7 +102,6 @@ void	draw_points(t_fdf *fdf, t_mlx *mlx)
 	d.win_mid_y = (fdf->screen_height / 2);
 	flag.rows = map.height;
 	flag.columns = map.wide;
-	printf("window size: (%4d,%4d)\n", fdf->screen_width, fdf->screen_height);
 	draw_loop(&d, fdf, &flag, HORIZONTAL);
 	flag.rows = map.wide;
 	flag.columns = map.height;

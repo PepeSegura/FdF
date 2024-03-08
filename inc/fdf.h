@@ -6,7 +6,7 @@
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 20:20:32 by psegura-          #+#    #+#             */
-/*   Updated: 2024/03/08 22:07:15 by psegura-         ###   ########.fr       */
+/*   Updated: 2024/03/08 22:14:16 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,14 @@ enum e_modes
 	MOVE_LEFT,
 };
 
-typedef struct s_data
+typedef struct s_img
 {
 	void	*img;
 	char	*addr;
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
-}				t_data;
+}				t_img;
 
 typedef struct s_point
 {
@@ -96,7 +96,7 @@ typedef struct s_fdf
 {
 	t_mlx	mlx;
 	t_map	map;
-	t_data	img;
+	t_img	img;
 	int		zoom;
 	int		scale;
 	int		translate_x;
@@ -110,7 +110,7 @@ t_point	**create_map_matrix(t_map *info, char *filename);
 void	set_screen_data(int *screen_width, int *screen_height);
 
 void	draw_points(t_fdf *fdf, t_mlx *mlx);
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
+void	my_mlx_pixel_put(t_img *data, int x, int y, int color);
 void	bresenham_line(t_fdf *fdf, t_point prev, t_point new);
 
 float	fast_sqrt(float x);
