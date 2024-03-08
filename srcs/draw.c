@@ -6,7 +6,7 @@
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 19:41:36 by psegura-          #+#    #+#             */
-/*   Updated: 2024/03/08 21:57:13 by psegura-         ###   ########.fr       */
+/*   Updated: 2024/03/08 22:07:18 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,18 +44,7 @@ void	clear_img(t_fdf *fdf)
 #define I 0
 #define J 1
 
-typedef struct s_draw
-{
-	int		id[2];
-	double	win_mid_x;
-	double	win_mid_y;
-	int		map_mid_x;
-	int		map_mid_y;
-	t_point	prev;
-	t_point	new;
-}	t_draw;
-
-void get_new_point_data(t_draw *d, t_point **points, t_fdf *fdf, int flag)
+void	get_new_point_data(t_draw *d, t_point **points, t_fdf *fdf, int flag)
 {
 	if (flag == HORIZONTAL)
 	{
@@ -77,15 +66,15 @@ void get_new_point_data(t_draw *d, t_point **points, t_fdf *fdf, int flag)
 	d->new.y += fdf->translate_y;
 }
 
-void	draw_loop(t_draw *d, t_fdf *fdf, int rows, int columns, int flag)
+void	draw_loop(t_draw *d, t_fdf *fdf, t_flag *f, int flag)
 {
 	const t_map	map = fdf->map;
 
 	d->id[I] = 0;
-	while (d->id[I] < rows)
+	while (d->id[I] < f->rows)
 	{
 		d->id[J] = 0;
-		while (d->id[J] < columns)
+		while (d->id[J] < f->columns)
 		{
 			d->prev.x = d->new.x;
 			d->prev.y = d->new.y;
@@ -100,17 +89,23 @@ void	draw_loop(t_draw *d, t_fdf *fdf, int rows, int columns, int flag)
 
 void	draw_points(t_fdf *fdf, t_mlx *mlx)
 {
-	t_map	map = fdf->map;
-	t_draw	d;
+	const t_map	map = fdf->map;
+	t_draw		d;
+	t_flag		flag;
 
 	ft_memset(&d, 0, sizeof(t_draw));
+	ft_memset(&flag, 0, sizeof(t_flag));
 	clear_img(fdf);
 	d.map_mid_x = map.height / 2;
 	d.map_mid_y = map.wide / 2;
 	d.win_mid_x = (fdf->screen_width / 2);
 	d.win_mid_y = (fdf->screen_height / 2);
+	flag.rows = map.height;
+	flag.columns = map.wide;
 	printf("window size: (%4d,%4d)\n", fdf->screen_width, fdf->screen_height);
-	draw_loop(&d, fdf, map.height, map.wide, HORIZONTAL);
-	draw_loop(&d, fdf, map.wide, map.height, VERTICAL);
+	draw_loop(&d, fdf, &flag, HORIZONTAL);
+	flag.rows = map.wide;
+	flag.columns = map.height;
+	draw_loop(&d, fdf, &flag, VERTICAL);
 	mlx_put_image_to_window(mlx->mlx, mlx->win, fdf->img.img, 0, 0);
 }

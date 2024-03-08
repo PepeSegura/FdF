@@ -6,7 +6,7 @@
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 20:20:32 by psegura-          #+#    #+#             */
-/*   Updated: 2024/03/08 20:11:15 by psegura-         ###   ########.fr       */
+/*   Updated: 2024/03/08 22:07:15 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,23 @@ typedef struct s_point
 	int		height;
 	int		color;
 }	t_point;
+
+typedef struct s_flag
+{
+	int	rows;
+	int	columns;
+}	t_flag;
+
+typedef struct s_draw
+{
+	int		id[2];
+	double	win_mid_x;
+	double	win_mid_y;
+	int		map_mid_x;
+	int		map_mid_y;
+	t_point	prev;
+	t_point	new;
+}	t_draw;
 
 typedef struct s_bresenham
 {
