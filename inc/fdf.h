@@ -6,7 +6,7 @@
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 20:20:32 by psegura-          #+#    #+#             */
-/*   Updated: 2024/03/06 18:11:43 by psegura-         ###   ########.fr       */
+/*   Updated: 2024/03/08 20:05:02 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,18 +88,23 @@ typedef struct s_fdf
 	int		screen_height;
 }	t_fdf;
 
-/*__Matrix_Operations__*/
-void	print_matrix(int size_x, int size_y, int **a);
-int		**create_matrix(int size_x, int size_y);
-int		**matrix_adition(int size_x, int size_y,
-			const int a[size_x][size_y], const int b[size_x][size_y]);
-int		**matrix_multiplication(int size_x, int size_y,
-			const int a[size_x][size_y], const int b[size_x][size_y]);
 
 t_point	**create_map_matrix(t_map *info, char *filename);
 
-void	ft_print_error(char *str);
+void	set_screen_data(int *screen_width, int *screen_height);
+
+void	draw_points(t_fdf *fdf, t_mlx *mlx);
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 void	bresenham_line(t_fdf *fdf, t_point prev, t_point new);
+
+float	fast_sqrt(float x);
+void	rotate_point(int *x, int *y, int *z);
+
+void	create_hooks(t_fdf *fdf);
+
+int		ft_exit(void);
+int		ft_input(int key, t_fdf *fdf);
+
+void	ft_print_error(char *str);
 
 #endif

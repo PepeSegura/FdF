@@ -93,7 +93,7 @@ int mlx_loop_end (void *mlx_ptr);
 **  hook funct are called as follow :
 **
 **   expose_hook(void *param);
-**   key_hook(int keycode, void *param);
+**   key_hook(int key, void *param);
 **   mouse_hook(int button, int x,int y, void *param);
 **   loop_hook(void *param);
 **

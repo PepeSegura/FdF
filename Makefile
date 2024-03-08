@@ -6,7 +6,7 @@
 #    By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/06 16:12:27 by psegura-          #+#    #+#              #
-#    Updated: 2024/03/06 03:50:46 by psegura-         ###   ########.fr        #
+#    Updated: 2024/03/08 19:42:16 by psegura-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,14 +24,18 @@ NAME = fdf
 
 FDF_SRCS =						\
 			main.c				\
-			bresenham.c			\
-			matrix_operations.c	\
-			read_and_store_map.c\
+			draw.c				\
 			errors.c			\
+			key_hook.c			\
+			bresenham.c			\
+			transformation.c	\
+			set_screen_width.c	\
+			read_and_store_map.c\
 		
 SRCS = $(addprefix srcs/, $(FDF_SRCS))
 
 OBJS = $(SRCS:%.c=objs/%.o)
+DEPS = $(OBJS:%.o=%.d)
 
 LIB = libft/libft.a
 
@@ -39,10 +43,11 @@ CC = gcc
 
 OS = $(shell uname -s)
 
-CFLAGS	 = -Wall -Wextra -Werror -g3 -fsanitize=address#,leak
+CFLAGS	 = -Wall -Wextra -Werror #-g3 -fsanitize=address#,leak
 CFLAGS	+= -I inc
 CFLAGS	+= -I libft
 CFLAGS	+= -O3
+CPPFLAGS = -MMD
 
 ifeq ($(OS),Darwin)
 	CFLAGS += -D OSX
@@ -67,7 +72,7 @@ objs:
 	@mkdir -p objs/srcs/
 
 objs/%.o: %.c
-	@$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
 clean:
 	@make clean -C libft
@@ -85,5 +90,7 @@ debug:: re
 
 norma:
 	@echo 6e6f726d696e65747465207372637320696e6320313e2f6465762f6e756c6c3b206966205b5b20243f202d65712030205d5d3b207468656e206e6f726d696e65747465207372637320696e633b20656c7365206e6f726d696e65747465207372637320696e63207c206772657020274572726f7227203b206669 | xxd -r -p | zsh
+
+-include $(DEPS)
 
 .PHONY: all clean fclean re norma debug
