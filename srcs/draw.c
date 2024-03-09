@@ -6,7 +6,7 @@
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 19:41:36 by psegura-          #+#    #+#             */
-/*   Updated: 2024/03/08 22:38:37 by psegura-         ###   ########.fr       */
+/*   Updated: 2024/03/09 12:38:06 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	get_new_point_data(t_draw *d, t_point **points, t_fdf *fdf, int flag)
 		d->new.x = (d->win_mid_x + (d->id[J] - d->map_mid_y) * fdf->zoom);
 		d->new.y = (d->win_mid_y + (d->id[I] - d->map_mid_x) * fdf->zoom);
 		d->new.y -= points[d->id[I]][d->id[J]].height * fdf->scale;
-		rotate_point(&d->new.x, &d->new.y, &points[d->id[I]][d->id[J]].height);
+		// rotate_point(&d->new.x, &d->new.y, &points[d->id[I]][d->id[J]].height);
 		d->new.color = points[d->id[I]][d->id[J]].color;
 	}
 	else if (flag == VERTICAL)
@@ -59,7 +59,7 @@ void	get_new_point_data(t_draw *d, t_point **points, t_fdf *fdf, int flag)
 		d->new.x = (d->win_mid_x + (d->id[I] - d->map_mid_y) * fdf->zoom);
 		d->new.y = (d->win_mid_y + (d->id[J] - d->map_mid_x) * fdf->zoom);
 		d->new.y -= points[d->id[J]][d->id[I]].height * fdf->scale;
-		rotate_point(&d->new.x, &d->new.y, &points[d->id[J]][d->id[I]].height);
+		// rotate_point(&d->new.x, &d->new.y, &points[d->id[J]][d->id[I]].height);
 		d->new.color = points[d->id[J]][d->id[I]].color;
 	}
 	d->new.x += fdf->translate_x;
