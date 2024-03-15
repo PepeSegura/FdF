@@ -6,7 +6,7 @@
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 18:53:09 by psegura-          #+#    #+#             */
-/*   Updated: 2024/03/09 14:03:39 by psegura-         ###   ########.fr       */
+/*   Updated: 2024/03/12 20:21:44 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,10 @@ t_point	**create_map_matrix(t_map *info, char *filename)
 	char	*aux;
 	int		fd;
 
+	(void)info, (void)final_map;
+	long	time = get_time();
+	printf("---------READING-MAP---------\n");
+
 	fd = open(filename, O_RDONLY);
 	map = ft_calloc(1, sizeof(char *));
 	while (1)
@@ -102,9 +106,13 @@ t_point	**create_map_matrix(t_map *info, char *filename)
 			break ;
 		map = ft_add_row_matrix(map, line);
 	}
+	
 	final_map = store_map_info(info, map, 0, 0);
 	close(fd);
 	ft_free_matrix(map);
 	info->map = final_map;
+	printf("Time to store map: [%ld]\n", time_dif(time));
 	return (final_map);
+	
+	return (NULL);
 }

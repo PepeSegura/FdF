@@ -6,7 +6,7 @@
 /*   By: psegura- <psegura-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 20:20:32 by psegura-          #+#    #+#             */
-/*   Updated: 2024/03/08 22:14:16 by psegura-         ###   ########.fr       */
+/*   Updated: 2024/03/10 16:55:05 by psegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,5 +122,9 @@ int		ft_exit(void);
 int		ft_input(int key, t_fdf *fdf);
 
 void	ft_print_error(char *str);
+
+#include <sys/time.h>
+long	get_time(void);
+long	time_dif(long old_time);
 
 #endif
